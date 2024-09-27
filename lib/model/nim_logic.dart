@@ -22,10 +22,10 @@ class Computador {
     }
 
     // Evita o computador de perder o jogo personalizado e se possível ganhar
-    if (qtdPalitos - jogadaAleatoria == 0 &&
+    if (qtdPalitos - jogadaAleatoria <= 0 &&
         qtdPalitos > 1 &&
         jogadaAleatoria > 1 &&
-        jogadaAleatoria <= qtdPalitos) {
+        jogadaAleatoria >= qtdPalitos) {
       return jogadaAleatoria - 1;
     }
 
