@@ -122,85 +122,100 @@ class _GuiNimState extends State<GuiNim> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           title: const Center(
               child: Text(
             'N.I.M GAME',
             style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto'),
           )),
         ),
-        body: Column(
+        body: Stack(
           children: [
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
-                ),
-                itemCount: qtdPalitos,
-                itemBuilder: (context, index) {
-                  return Visibility(
-                    visible: visibleItems[index],
-                    child: const Padding(
-                      padding: EdgeInsets.all(6.0),
-                      child: SizedBox(
-                          height: 50,
-                          width: 20,
-                          child: Image(
-                              image: NetworkImage(
-                                  'https://static.vecteezy.com/system/resources/previews/008/505/843/non_2x/burning-match-illustration-png.png'))),
-                    ),
-                  );
-                },
+            Positioned.fill(
+              child: Image.network(
+                'https://images.pexels.com/photos/68543/match-matches-sticks-lighter-68543.jpeg?cs=srgb&dl=pexels-pixabay-68543.jpg&fm=jpg',
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 3),
-            Expanded(
-              flex: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Wrap(
+            Column(
+              children: [
+                Expanded(
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5,
+                    ),
+                    itemCount: qtdPalitos,
+                    itemBuilder: (context, index) {
+                      return Visibility(
+                        visible: visibleItems[index],
+                        child: const Padding(
+                          padding: EdgeInsets.all(6.0),
+                          child: SizedBox(
+                              height: 50,
+                              width: 20,
+                              child: Image(
+                                  image: NetworkImage(
+                                      'https://static.vecteezy.com/system/resources/previews/008/505/843/non_2x/burning-match-illustration-png.png'))),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Expanded(
+                  flex: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove),
-                        onPressed: () {
-                          _valueToHide == 1
-                              ? null
-                              : setState(() {
-                                  _valueToHide--;
-                                });
-                        },
-                      ),
-                      Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            _valueToHide.toString(),
-                            textAlign: TextAlign.center,
-                          )),
-                      IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: () {
-                          _valueToHide == 3
-                              ? null
-                              : setState(() {
-                                  _valueToHide++;
-                                });
-                        },
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _valueToHide > getVisibleItemsCount()
-                              ? null
-                              : hideItems();
-                        },
-                        child: const Text('RETIRAR'),
+                      Wrap(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.remove),
+                            onPressed: () {
+                              _valueToHide == 1
+                                  ? null
+                                  : setState(() {
+                                      _valueToHide--;
+                                    });
+                            },
+                          ),
+                          Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                _valueToHide.toString(),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(color: Colors.white),
+                              )),
+                          IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: () {
+                              _valueToHide == 3
+                                  ? null
+                                  : setState(() {
+                                      _valueToHide++;
+                                    });
+                            },
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              _valueToHide > getVisibleItemsCount()
+                                  ? null
+                                  : hideItems();
+                            },
+                            child: const Text('RETIRAR'),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 70),
+              ],
             ),
-            const SizedBox(height: 70),
           ],
         ),
       ),
@@ -211,34 +226,45 @@ class _GuiNimState extends State<GuiNim> {
 class WinnerPage extends StatelessWidget {
   final String nickname;
   const WinnerPage({super.key, required this.nickname});
-
   @override
   Widget build(BuildContext context) {
-    return Column(
+    int screenWidth = MediaQuery.of(Get.context!).size.width.toInt();
+    int screenHeight = MediaQuery.of(Get.context!).size.height.toInt();
+    return Stack(
       children: [
-        Expanded(child: Center(child: Text('GANHOU, $nickname'))),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.red),
-                  foregroundColor: WidgetStatePropertyAll(Colors.white),
-                  maximumSize: WidgetStatePropertyAll(Size(250, 100)),
-                  minimumSize: WidgetStatePropertyAll(Size(120, 50)),
-                  textStyle: WidgetStatePropertyAll(TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Poppins')),
-                ),
-                onPressed: () {
-                  Get.back();
-                },
-                child: const Text('RECOMEÇAR O JOGO'),
+        Image.network(
+          'https://i.imgur.com/ATI5M98.gif',
+          width: screenWidth.toDouble(),
+          height: screenHeight.toDouble(),
+          fit: BoxFit.cover,
+        ),
+        Column(
+          children: [
+            Expanded(child: Center(child: Text('GANHOU, $nickname'))),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Colors.red),
+                      foregroundColor: WidgetStatePropertyAll(Colors.white),
+                      maximumSize: WidgetStatePropertyAll(Size(250, 100)),
+                      minimumSize: WidgetStatePropertyAll(Size(120, 50)),
+                      textStyle: WidgetStatePropertyAll(TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins')),
+                    ),
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: const Text('RECOMEÇAR O JOGO'),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
@@ -250,31 +276,43 @@ class LoserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    int screenWidth = MediaQuery.of(Get.context!).size.width.toInt();
+    int screenHeight = MediaQuery.of(Get.context!).size.height.toInt();
+    return Stack(
       children: [
-        const Expanded(child: Center(child: Text('PERDEU'))),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.red),
-                  foregroundColor: WidgetStatePropertyAll(Colors.white),
-                  maximumSize: WidgetStatePropertyAll(Size(250, 100)),
-                  minimumSize: WidgetStatePropertyAll(Size(120, 50)),
-                  textStyle: WidgetStatePropertyAll(TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Poppins')),
-                ),
-                onPressed: () {
-                  Get.back();
-                },
-                child: const Text('RECOMEÇAR O JOGO'),
+        Image.network(
+          'https://i.imgur.com/ATI5M98.gif',
+          width: screenWidth.toDouble(),
+          height: screenHeight.toDouble(),
+          fit: BoxFit.cover,
+        ),
+        Column(
+          children: [
+            const Expanded(child: Center(child: Text('PERDEU'))),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Colors.red),
+                      foregroundColor: WidgetStatePropertyAll(Colors.white),
+                      maximumSize: WidgetStatePropertyAll(Size(250, 100)),
+                      minimumSize: WidgetStatePropertyAll(Size(120, 50)),
+                      textStyle: WidgetStatePropertyAll(TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins')),
+                    ),
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: const Text('RECOMEÇAR O JOGO'),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
