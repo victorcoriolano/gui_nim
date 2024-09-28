@@ -38,125 +38,202 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         title: const Text('N.I.M Game'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: screenHeight * 0.05,
-            horizontal: screenWidth * 0.1,
+      body: Stack(
+        children: [
+          Positioned(
+            child: Image.network(
+              'https://p1.pxfuel.com/preview/992/549/179/match-fire-close-burn.jpg',
+              width: screenWidth,
+              height: screenHeight,
+              fit: BoxFit.cover,
+            ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Container com título
-              Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: screenHeight * 0.02,
-                  horizontal: screenWidth * 0.05,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.red.shade100,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    'N.I.M!',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.06,
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: screenHeight * 0.05,
+                horizontal: screenWidth * 0.1,
               ),
-              SizedBox(height: screenHeight * 0.05),
-
-              // DropdownButton para selecionar a quantidade de palitos
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Quantidade de Palitos:',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.045,
-                      fontWeight: FontWeight.w600,
+                  // Container com título
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: screenHeight * 0.02,
+                      horizontal: screenWidth * 0.05,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(192, 255, 205, 210),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'N.I.M!',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.06,
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                  DropdownButton<int>(
-                    value: _selectedPalitos,
-                    onChanged: (int? newValue) {
-                      setState(() {
-                        _selectedPalitos = newValue!;
-                      });
-                    },
-                    items: List<int>.generate(7, (index) => index + 7)
-                        .map<DropdownMenuItem<int>>((int value) {
-                      return DropdownMenuItem<int>(
-                        value: value,
-                        child: Text('$value Palitos'),
-                      );
-                    }).toList(),
-                    icon: const Icon(Icons.arrow_drop_down),
-                    isExpanded: true,
-                  ),
-                ],
-              ),
-              SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.05),
 
-              // Campo de texto para o nickname do jogador
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Insira seu Nickname:',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.045,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  TextField(
-                    controller: nicknameController,
-                    focusNode: nicknameFocusNode,
-                    onChanged: (value) {
-                      setState(() {
-                        _nickname = value;
-                      });
-                    },
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Nickname',
-                    ),
-                    textInputAction:
-                        TextInputAction.next, // Define a ação de "próximo"
-                    onSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(cpuNameFocusNode);
-                    },
+                  // DropdownButton para selecionar a quantidade de palitos
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Quantidade de Palitos:',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.045,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      DropdownButton<int>(
+                        value: _selectedPalitos,
+                        onChanged: (int? newValue) {
+                          setState(() {
+                            _selectedPalitos = newValue!;
+                          });
+                        },
+                        items: List<int>.generate(7, (index) => index + 7)
+                            .map<DropdownMenuItem<int>>((int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text('$value Palitos',
+                                style: const TextStyle(color: Colors.white)),
+                          );
+                        }).toList(),
+                        icon: const Icon(Icons.arrow_drop_down),
+                        isExpanded: true,
+                      ),
+                    ],
                   ),
                   SizedBox(height: screenHeight * 0.03),
 
-                  // Campo de texto para o nome do CPU
-                  Text(
-                    'Insira o nome do CPU:',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.045,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  TextField(
-                      controller: cpuNameController,
-                      focusNode: cpuNameFocusNode,
-                      onChanged: (value) {
-                        setState(() {
-                          _cpuName = value;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Insira o novo ou primeiro nome do CPU',
+                  // Campo de texto para o nickname do jogador
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Insira seu Nickname:',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.045,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
-                      textInputAction:
-                          TextInputAction.done, // Define a ação de "finalizar"
-                      onSubmitted: (_) {
+                      TextField(
+                        controller: nicknameController,
+                        focusNode: nicknameFocusNode,
+                        keyboardType: TextInputType.name,
+                        style: const TextStyle(color: Colors.white),
+                        onChanged: (value) {
+                          setState(() {
+                            _nickname = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Nickname',
+                          labelStyle: TextStyle(color: Colors.white),
+                        ),
+                        textInputAction:
+                            TextInputAction.next, // Define a ação de "próximo"
+                        onSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(cpuNameFocusNode);
+                        },
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+
+                      // Campo de texto para o nome do CPU
+                      Text(
+                        'Insira o nome do CPU:',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.045,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      TextField(
+                          controller: cpuNameController,
+                          focusNode: cpuNameFocusNode,
+                          keyboardType: TextInputType.name,
+                          onChanged: (value) {
+                            setState(() {
+                              _cpuName = value;
+                            });
+                          },
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.all(5),
+                            labelText:
+                                'Insira ou mude o nome do CPU (Opcional)',
+                            labelStyle: TextStyle(color: Colors.white),
+                          ),
+                          textInputAction: TextInputAction
+                              .done, // Define a ação de "finalizar"
+                          onSubmitted: (_) {
+                            if (nicknameController.text == '' ||
+                                nicknameController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Por favor, não insira nicknames vazios.'),
+                                ),
+                              );
+                            } else if (nicknameController.text ==
+                                cpuNameController.text) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Por favor, não insira nicknames iguais.'),
+                                ),
+                              );
+                            } else {
+                              setState(() {
+                                _nickname = nicknameController.text;
+                                _cpuName = cpuNameController.text;
+                                _selectedPalitos = _selectedPalitos;
+                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GuiNim(
+                                    gameSettings: GameSettings(
+                                        quantidadePalitos: _selectedPalitos,
+                                        nickname: _nickname,
+                                        cpuName: _cpuName),
+                                  ),
+                                ),
+                              );
+                            }
+                          }),
+                      SizedBox(height: screenHeight * 0.05),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.05),
+
+                  // Botão para iniciar o jogo
+                  SizedBox(
+                    width: screenWidth * 0.6,
+                    height: screenWidth * 0.09,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                          shape:
+                              WidgetStatePropertyAll(RoundedRectangleBorder()),
+                          backgroundColor:
+                              WidgetStatePropertyAll(Colors.redAccent),
+                          overlayColor: WidgetStatePropertyAll(
+                              Color.fromARGB(255, 255, 230, 230)),
+                          shadowColor: WidgetStatePropertyAll(Colors.blue)),
+                      onPressed: () {
+                        // Lógica para iniciar o jogo, ex: navegar para outra página
                         if (nicknameController.text == '' ||
                             nicknameController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -175,9 +252,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                           );
                         } else {
                           setState(() {
-                            _nickname = nicknameController.text;
-                            _cpuName = cpuNameController.text;
-                            _selectedPalitos = _selectedPalitos;
+                            nicknameController.text = '';
+                            cpuNameController.text = '';
                           });
                           Navigator.push(
                             context,
@@ -191,96 +267,23 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                             ),
                           );
                         }
-                      }),
-                  SizedBox(height: screenHeight * 0.05),
-                ],
-              ),
-              SizedBox(height: screenHeight * 0.05),
-
-              // Botão para iniciar o jogo
-              SizedBox(
-                width: screenWidth * 0.6,
-                height: screenHeight * 0.08,
-                child: ElevatedButton(
-                  style: const ButtonStyle(
-                      shape: WidgetStatePropertyAll(RoundedRectangleBorder()),
-                      backgroundColor: WidgetStatePropertyAll(Colors.redAccent),
-                      overlayColor: WidgetStatePropertyAll(
-                          Color.fromARGB(255, 255, 230, 230)),
-                      shadowColor: WidgetStatePropertyAll(Colors.blue)),
-                  onPressed: () {
-                    // Lógica para iniciar o jogo, ex: navegar para outra página
-                    if (nicknameController.text == '' ||
-                        nicknameController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content:
-                              Text('Por favor, não insira nicknames vazios.'),
+                      },
+                      child: Text(
+                        'Iniciar Jogo',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.045,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
                         ),
-                      );
-                    } else if (nicknameController.text ==
-                        cpuNameController.text) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content:
-                              Text('Por favor, não insira nicknames iguais.'),
-                        ),
-                      );
-                    } else {
-                      setState(() {
-                        nicknameController.text = '';
-                        cpuNameController.text = '';
-                      });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GuiNim(
-                            gameSettings: GameSettings(
-                                quantidadePalitos: _selectedPalitos,
-                                nickname: _nickname,
-                                cpuName: _cpuName),
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: Text(
-                    'Iniciar Jogo',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.045,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-// Placeholder para a tela do jogo
-class GamePage extends StatelessWidget {
-  final int palitos;
-  final String nickname;
-
-  const GamePage({super.key, required this.palitos, required this.nickname});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('N.I.M Game'),
-      ),
-      body: Center(
-        child: Text(
-          'Jogador: $nickname, Palitos: $palitos',
-          style: const TextStyle(fontSize: 24),
-        ),
+        ],
       ),
     );
   }
