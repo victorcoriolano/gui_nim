@@ -1,5 +1,5 @@
 # gui_nim
 
-victorcoriolano.github.io
+https://victorcoriolano.github.io/
 
 Interface gráfica para o jogo "NIM"
