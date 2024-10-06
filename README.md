@@ -1,3 +1,5 @@
 # gui_nim
 
-A new Flutter project.
+https://victorcoriolano.github.io/
+
+Interface gráfica para o jogo "NIM"
