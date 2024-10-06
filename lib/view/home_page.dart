@@ -94,6 +94,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                         ),
                       ),
                       DropdownButton<int>(
+                        dropdownColor: Colors.black,
+                        focusColor: Colors.grey.shade600,
                         value: _selectedPalitos,
                         onChanged: (int? newValue) {
                           setState(() {
