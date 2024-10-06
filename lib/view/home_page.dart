@@ -70,11 +70,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     getNickname().then((value) {
       setState(() {
         _nickname = value;
+        nicknameController.text = value;
       });
     });
     getCpuName().then((value) {
       setState(() {
         _cpuName = value;
+        cpuNameController.text = value;
       });
     });
   }
@@ -170,8 +172,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                         focusColor: Colors.grey.shade600,
                         value: _selectedPalitos,
                         onChanged: (int? newValue) {
-                          setState(() async {
-                            await setSelectedPalitos(newValue!);
+                          setState(() {
+                            setSelectedPalitos(newValue!);
                           });
                         },
                         items: List<int>.generate(7, (index) => index + 7)
@@ -270,10 +272,15 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                                 ),
                               );
                             } else {
-                              setState(() async {
-                                _nickname = await getNickname();
-                                _cpuName = await getCpuName();
+                              () async {
+                                _nickname = getNickname().toString();
+                                _cpuName = getCpuName().toString();
                                 _selectedPalitos = await getSelectedPalitos();
+                              };
+                              setState(() {
+                                _nickname = _nickname;
+                                _cpuName = _cpuName;
+                                _selectedPalitos = _selectedPalitos;
                               });
                               Navigator.push(
                                 context,
@@ -325,12 +332,15 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                             ),
                           );
                         } else {
-                          setState(() async {
-                            _nickname = await getNickname();
-                            _cpuName = await getCpuName();
+                          () async {
+                            _nickname = getNickname().toString();
+                            _cpuName = getCpuName().toString();
                             _selectedPalitos = await getSelectedPalitos();
-                            nicknameController.text = '';
-                            cpuNameController.text = '';
+                          };
+                          setState(() {
+                            _nickname = _nickname;
+                            _cpuName = _cpuName;
+                            _selectedPalitos = _selectedPalitos;
                           });
                           Navigator.push(
                             context,
