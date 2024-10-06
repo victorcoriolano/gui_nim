@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gui_nim/model/gamesettings.dart';
 import 'package:gui_nim/view-model/gui_nim.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GameSettingsPage extends StatefulWidget {
   const GameSettingsPage({super.key});
@@ -10,9 +11,80 @@ class GameSettingsPage extends StatefulWidget {
 }
 
 class _GameSettingsPageState extends State<GameSettingsPage> {
+  final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+
+  Future<void> setSelectedPalitos(int selectedPalitos) async {
+    final prefs = await SharedPreferences.getInstance();
+    _selectedPalitos = selectedPalitos;
+    await prefs.setInt('selectedPalitos', selectedPalitos);
+  }
+
+  Future<void> setNickname(String nickname) async {
+    final prefs = await SharedPreferences.getInstance();
+    _nickname = nickname;
+    await prefs.setString('nickname', nickname);
+  }
+
+  Future<void> setCpuName(String cpuName) async {
+    final prefs = await SharedPreferences.getInstance();
+    _cpuName = cpuName;
+    await prefs.setString('cpuName', cpuName);
+  }
+
+  Future<void> resetGameAndVisibility() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      _selectedPalitos = 7;
+      _nickname = '';
+      _cpuName = '';
+    });
+  }
+
+  Future<int> getSelectedPalitos() async {
+    final prefs = await SharedPreferences.getInstance();
+    final selectedPalitos = prefs.getInt('selectedPalitos') ?? 7;
+    return selectedPalitos;
+  }
+
+  Future<String> getNickname() async {
+    final prefs = await SharedPreferences.getInstance();
+    final nickname = prefs.getString('nickname') ?? '';
+    return nickname;
+  }
+
+  Future<String> getCpuName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cpuName = prefs.getString('cpuName') ?? '';
+    return cpuName;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getSelectedPalitos().then((value) {
+      setState(() {
+        _selectedPalitos = value;
+      });
+    });
+    getNickname().then((value) {
+      setState(() {
+        _nickname = value;
+      });
+    });
+    getCpuName().then((value) {
+      setState(() {
+        _cpuName = value;
+      });
+    });
+  }
+
+  // Definindo os valores iniciais
   int _selectedPalitos = 7; // Valor inicial da quantidade de palitos
   String _nickname = ''; // Nickname do jogador
   String _cpuName = '';
+
+  // Definindo os controles de foco
   final TextEditingController nicknameController = TextEditingController();
   final TextEditingController cpuNameController = TextEditingController();
   final FocusNode nicknameFocusNode = FocusNode();
@@ -98,8 +170,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                         focusColor: Colors.grey.shade600,
                         value: _selectedPalitos,
                         onChanged: (int? newValue) {
-                          setState(() {
-                            _selectedPalitos = newValue!;
+                          setState(() async {
+                            await setSelectedPalitos(newValue!);
                           });
                         },
                         items: List<int>.generate(7, (index) => index + 7)
@@ -136,7 +208,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                         style: const TextStyle(color: Colors.white),
                         onChanged: (value) {
                           setState(() {
-                            _nickname = value;
+                            setNickname(value);
                           });
                         },
                         decoration: const InputDecoration(
@@ -167,7 +239,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                           keyboardType: TextInputType.name,
                           onChanged: (value) {
                             setState(() {
-                              _cpuName = value;
+                              setCpuName(value);
                             });
                           },
                           style: const TextStyle(color: Colors.white),
@@ -180,7 +252,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                           ),
                           textInputAction: TextInputAction
                               .done, // Define a ação de "finalizar"
-                          onSubmitted: (_) {
+                          onSubmitted: (_) async {
                             if (nicknameController.text == '' ||
                                 nicknameController.text.isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -198,10 +270,10 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                                 ),
                               );
                             } else {
-                              setState(() {
-                                _nickname = nicknameController.text;
-                                _cpuName = cpuNameController.text;
-                                _selectedPalitos = _selectedPalitos;
+                              setState(() async {
+                                _nickname = await getNickname();
+                                _cpuName = await getCpuName();
+                                _selectedPalitos = await getSelectedPalitos();
                               });
                               Navigator.push(
                                 context,
@@ -253,7 +325,10 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                             ),
                           );
                         } else {
-                          setState(() {
+                          setState(() async {
+                            _nickname = await getNickname();
+                            _cpuName = await getCpuName();
+                            _selectedPalitos = await getSelectedPalitos();
                             nicknameController.text = '';
                             cpuNameController.text = '';
                           });
