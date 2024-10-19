@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gui_nim/model/gamesettings.dart';
 import 'package:gui_nim/view-model/gui_nim.dart';
+import 'package:gui_nim/view/ranking_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GameSettingsPage extends StatefulWidget {
@@ -132,6 +134,48 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  //Container pra acessar o ranking
+                  InkWell(
+                    onTap: () {
+                      Get.to(
+                          RankingPage(
+                            lastUserId: nicknameController.text != ''
+                                ? nicknameController.text
+                                : getNickname().toString(),
+                          ),
+                          curve: Curves.easeInOut,
+                          transition: Transition.circularReveal);
+                    },
+                    child: Container(
+                      width: screenWidth * 0.8,
+                      height: screenHeight * 0.1,
+                      margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                      padding: EdgeInsets.symmetric(
+                        vertical: screenHeight * 0.02,
+                        horizontal: screenWidth * 0.05,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(179, 255, 141, 152),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Wrap(
+                          children: [
+                            Text(
+                              'ACESSAR RANKING',
+                              style: TextStyle(
+                                fontSize: screenWidth < screenHeight
+                                    ? screenWidth * 0.05
+                                    : screenHeight * 0.05,
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   // Container com título
                   Container(
                     padding: EdgeInsets.symmetric(
@@ -248,15 +292,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.all(5),
-                            labelText:
-                                'Insira ou mude o nome do CPU (Opcional)',
+                            labelText: 'Insira ou mude o nome do CPU',
                             labelStyle: TextStyle(color: Colors.white),
                           ),
                           textInputAction: TextInputAction
                               .done, // Define a ação de "finalizar"
                           onSubmitted: (_) async {
                             if (nicknameController.text == '' ||
-                                nicknameController.text.isEmpty) {
+                                nicknameController.text.isEmpty ||
+                                cpuNameController.text == '' ||
+                                cpuNameController.text.isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
@@ -316,7 +361,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                       onPressed: () {
                         // Lógica para iniciar o jogo, ex: navegar para outra página
                         if (nicknameController.text == '' ||
-                            nicknameController.text.isEmpty) {
+                            nicknameController.text.isEmpty ||
+                            cpuNameController.text == '' ||
+                            cpuNameController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(

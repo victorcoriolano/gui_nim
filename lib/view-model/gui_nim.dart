@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gui_nim/model/nim_logic.dart';
+import 'package:gui_nim/model/cpu_logic.dart';
 import 'package:gui_nim/model/gamesettings.dart';
 
 class GuiNim extends StatefulWidget {
@@ -15,6 +16,8 @@ class GuiNim extends StatefulWidget {
 }
 
 class _GuiNimState extends State<GuiNim> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   List<bool> visibleItems = List<bool>.generate(0, (index) => true);
   Computador cpuPlayer = Computador(maxRetirar: 3);
   int qtdPalitos = 7;
@@ -101,6 +104,24 @@ class _GuiNimState extends State<GuiNim> {
     return;
   }
 
+  CollectionReference rankingDoc() => firestore.collection('ranking');
+  Future<bool> addPoints() async {
+    try {
+      DocumentSnapshot doc = await rankingDoc().doc(nickname).get();
+      doc.exists
+          ? await rankingDoc()
+              .doc(nickname)
+              .update({'points': FieldValue.increment(1)})
+          : await rankingDoc()
+              .doc(nickname)
+              .set({'nickname': nickname, 'points': 1});
+      return true;
+    } on Exception catch (e) {
+      print('Erro adicionando pontos: $e');
+      return false;
+    }
+  }
+
   void checkGameOver() async {
     await Future.delayed(const Duration(milliseconds: 300));
 
@@ -110,6 +131,21 @@ class _GuiNimState extends State<GuiNim> {
           resetGameAndVisibility();
         });
       } else {
+        await addPoints().then((result) {
+          result
+              ? null
+              : Get.snackbar('Erro', 'Erro ao adicionar pontos',
+                  duration: const Duration(milliseconds: 1000),
+                  snackPosition: SnackPosition.BOTTOM,
+                  isDismissible: false,
+                  backgroundColor: Colors.red[700],
+                  margin: const EdgeInsets.all(10),
+                  colorText: Colors.black,
+                  padding: const EdgeInsets.all(10),
+                  showProgressIndicator: true,
+                  icon: Icon(Icons.error_outline_rounded,
+                      color: Colors.red[700]));
+        });
         Get.to(WinnerPage(nickname: nickname))?.then((_) {
           resetGameAndVisibility();
         });

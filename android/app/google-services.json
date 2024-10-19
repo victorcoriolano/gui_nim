@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "206802767874",
+    "project_id": "gui-nim-with-firebase",
+    "storage_bucket": "gui-nim-with-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206802767874:android:36eb962ea23880e7ff971b",
+        "android_client_info": {
+          "package_name": "com.guinim.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlTK4l-mq56E6Y9XZFPRCzbanineP9S7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
