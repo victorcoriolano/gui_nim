@@ -52,7 +52,7 @@ class _RankingPageState extends State<RankingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Center(
-                              child: Text('Ranking Page',
+                              child: Text('Ranking Page (Top 5)',
                                   style: TextStyle(
                                       color: lightMode
                                           ? Colors.black
