@@ -88,38 +88,42 @@ class _RankingPageState extends State<RankingPage> {
                           }
 
                           //lightMode ? Colors.black : Colors.white
-                          return ListView(
-                            children: snapshot.data!.docs
-                                .map((DocumentSnapshot document) {
-                              Map<String, dynamic> data =
-                                  document.data() as Map<String, dynamic>;
-                              if (data.isEmpty || data.values.isEmpty) {
-                                return const Center(
-                                    child:
-                                        Text('Nenhuma pontuação encontrada!'));
-                              }
-                              return ListTile(
-                                title: Text(data['nickname'],
-                                    style: TextStyle(
-                                      decoration: lastUserId == data['nickname']
-                                          ? TextDecoration.combine([
-                                              TextDecoration.overline,
-                                              TextDecoration.underline
-                                            ])
-                                          : null,
-                                      decorationColor: Colors.red,
-                                      color: lightMode
-                                          ? Colors.black
-                                          : Colors.white,
-                                    )),
-                                subtitle: Text('Pontos: ${data['points']}',
-                                    style: TextStyle(
+                          return ListView.builder(
+                              itemCount: snapshot.data!.docs.length <= 5
+                                  ? snapshot.data!.docs.length
+                                  : 5, // Limit to 5 elements
+                              itemBuilder: (context, index) {
+                                final DocumentSnapshot document =
+                                    snapshot.data!.docs[index];
+                                final Map<String, dynamic> data =
+                                    document.data() as Map<String, dynamic>;
+                                if (data.isEmpty || data.values.isEmpty) {
+                                  return const Center(
+                                      child: Text(
+                                          'Nenhuma pontuação encontrada!'));
+                                }
+                                return ListTile(
+                                  title: Text(data['nickname'],
+                                      style: TextStyle(
+                                        decoration:
+                                            lastUserId == data['nickname']
+                                                ? TextDecoration.combine([
+                                                    TextDecoration.overline,
+                                                    TextDecoration.underline
+                                                  ])
+                                                : null,
+                                        decorationColor: Colors.red,
                                         color: lightMode
                                             ? Colors.black
-                                            : Colors.white)),
-                              );
-                            }).toList(),
-                          );
+                                            : Colors.white,
+                                      )),
+                                  subtitle: Text('Pontos: ${data['points']}',
+                                      style: TextStyle(
+                                          color: lightMode
+                                              ? Colors.black
+                                              : Colors.white)),
+                                );
+                              });
                         },
                       ),
                     ),
